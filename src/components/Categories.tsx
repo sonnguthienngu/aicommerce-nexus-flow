@@ -1,122 +1,128 @@
+import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 
-import { Card, CardContent } from "@/components/ui/card";
-import { 
-  MessageSquare, 
-  FileText, 
-  Share2, 
-  Headphones, 
-  TrendingUp, 
-  Package,
-  Zap,
-  Shield
-} from "lucide-react";
-import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
-
-interface Category {
-  id: string;
-  name: string;
-  description: string;
-  icon: string;
-  color_class: string;
-  automation_count: number;
-}
-
-const iconMap = {
-  MessageSquare,
-  FileText,
-  Share2,
-  Headphones,
-  TrendingUp,
-  Package,
-  Zap,
-  Shield,
-};
+const categories = [
+  {
+    id: 1,
+    name: 'Electronics',
+    image: '/categories/electronics.jpg',
+    count: 1250,
+    color: 'from-blue-500 to-purple-500',
+  },
+  {
+    id: 2,
+    name: 'Fashion',
+    image: '/categories/fashion.jpg',
+    count: 3500,
+    color: 'from-pink-500 to-red-500',
+  },
+  {
+    id: 3,
+    name: 'Home & Living',
+    image: '/categories/home.jpg',
+    count: 890,
+    color: 'from-green-500 to-teal-500',
+  },
+  {
+    id: 4,
+    name: 'Beauty',
+    image: '/categories/beauty.jpg',
+    count: 1200,
+    color: 'from-purple-500 to-pink-500',
+  },
+  {
+    id: 5,
+    name: 'Sports',
+    image: '/categories/sports.jpg',
+    count: 750,
+    color: 'from-orange-500 to-red-500',
+  },
+  {
+    id: 6,
+    name: 'Books',
+    image: '/categories/books.jpg',
+    count: 2000,
+    color: 'from-yellow-500 to-orange-500',
+  },
+];
 
 const Categories = () => {
-  const { data: categories = [], isLoading } = useQuery({
-    queryKey: ['automation-categories'],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('automation_categories')
-        .select('*')
-        .order('name');
-
-      if (error) {
-        console.error('Error fetching categories:', error);
-        throw error;
-      }
-
-      return data as Category[];
-    },
-  });
-
-  if (isLoading) {
-    return (
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Explore by Category
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Find the perfect automation for your specific needs across various business functions
-            </p>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[...Array(8)].map((_, i) => (
-              <Card key={i} className="animate-pulse">
-                <CardContent className="p-6 text-center">
-                  <div className="w-16 h-16 bg-gray-200 rounded-2xl mx-auto mb-4"></div>
-                  <div className="h-4 bg-gray-200 rounded w-3/4 mx-auto mb-2"></div>
-                  <div className="h-3 bg-gray-200 rounded w-full mb-3"></div>
-                  <div className="h-3 bg-gray-200 rounded w-1/2 mx-auto"></div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-    );
-  }
-
   return (
-    <section className="py-20 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            Explore by Category
-          </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Find the perfect automation for your specific needs across various business functions
-          </p>
-        </div>
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      {categories.map((category, index) => (
+        <motion.div
+          key={category.id}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: index * 0.1 }}
+        >
+          <Link
+            to={`/category/${category.id}`}
+            className="group block relative h-64 rounded-2xl overflow-hidden"
+          >
+            {/* Background Image */}
+            <div className="absolute inset-0">
+              <img
+                src={category.image}
+                alt={category.name}
+                className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
+              />
+              <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/60" />
+            </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {categories.map((category) => {
-            const IconComponent = iconMap[category.icon as keyof typeof iconMap] || Package;
-            return (
-              <Card key={category.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer border-gray-200 hover:border-teal-200">
-                <CardContent className="p-6 text-center">
-                  <div className={`w-16 h-16 rounded-2xl ${category.color_class || 'bg-gray-100 text-gray-600'} flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300`}>
-                    <IconComponent className="w-8 h-8" />
-                  </div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-teal-600 transition-colors">
-                    {category.name}
-                  </h3>
-                  <p className="text-sm text-gray-600 mb-3">
-                    {category.description}
-                  </p>
-                  <span className="text-sm font-medium text-teal-600">
-                    {category.automation_count} automations
-                  </span>
-                </CardContent>
-              </Card>
-            );
-          })}
-        </div>
-      </div>
-    </section>
+            {/* Gradient Overlay */}
+            <div
+              className={`absolute inset-0 bg-gradient-to-br ${category.color} opacity-0 group-hover:opacity-20 transition-opacity duration-300`}
+            />
+
+            {/* Content */}
+            <div className="absolute inset-0 p-6 flex flex-col justify-end">
+              <motion.h3
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.5, delay: index * 0.1 + 0.2 }}
+                className="text-2xl font-bold text-white mb-2"
+              >
+                {category.name}
+              </motion.h3>
+              <motion.p
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.5, delay: index * 0.1 + 0.3 }}
+                className="text-white/80"
+              >
+                {category.count} Products
+              </motion.p>
+
+              {/* Explore Button */}
+              <motion.div
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.5, delay: index * 0.1 + 0.4 }}
+                className="mt-4"
+              >
+                <span className="inline-flex items-center text-white font-medium group-hover:translate-x-2 transition-transform duration-300">
+                  Explore Category
+                  <svg
+                    className="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform duration-300"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M17 8l4 4m0 0l-4 4m4-4H3"
+                    />
+                  </svg>
+                </span>
+              </motion.div>
+            </div>
+          </Link>
+        </motion.div>
+      ))}
+    </div>
   );
 };
 

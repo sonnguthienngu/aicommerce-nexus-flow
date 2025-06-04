@@ -1,65 +1,111 @@
-
-import { Button } from "@/components/ui/button";
-import { ArrowRight, Zap, Clock, TrendingUp } from "lucide-react";
-import { Link } from "react-router-dom";
+import { motion } from 'framer-motion';
+import { ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Hero = () => {
   return (
-    <section className="bg-gradient-to-br from-gray-50 via-teal-50 to-blue-50 py-20 lg:py-32">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-4xl mx-auto">
-          <h1 className="text-4xl md:text-6xl font-bold text-gray-900 leading-tight mb-6">
-            Automate your business with
-            <span className="bg-gradient-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent"> AI-powered workflows</span>
-          </h1>
-          
-          <p className="text-xl md:text-2xl text-gray-600 mb-8 leading-relaxed">
-            Discover, deploy, and scale intelligent automations built by experts. 
-            Transform repetitive tasks into seamless workflows in minutes, not months.
-          </p>
+    <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-purple-50 via-white to-blue-50">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 opacity-10">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-purple-200 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-blue-200 via-transparent to-transparent" />
+      </div>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-            <Link to="/automations">
-              <Button size="lg" className="bg-teal-600 hover:bg-teal-700 text-white px-8 py-4 text-lg">
-                Explore Automations
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          {/* Left Column - Text Content */}
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+            className="text-center lg:text-left"
+          >
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight"
+            >
+              Discover the Future of{' '}
+              <span className="bg-gradient-to-r from-purple-600 to-blue-500 bg-clip-text text-transparent">
+                AI-Powered Commerce
+              </span>
+            </motion.h1>
+
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="mt-6 text-xl text-gray-600 max-w-2xl mx-auto lg:mx-0"
+            >
+              Experience seamless shopping with our AI-driven platform. Find the perfect products tailored to your preferences.
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.6 }}
+              className="mt-10 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
+            >
+              <Link
+                to="/shop"
+                className="inline-flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-full text-white bg-gradient-to-r from-purple-600 to-blue-500 hover:from-purple-700 hover:to-blue-600 transition-all duration-200 shadow-lg hover:shadow-xl"
+              >
+                Shop Now
                 <ArrowRight className="ml-2 w-5 h-5" />
-              </Button>
-            </Link>
-            <Link to="/for-sellers">
-              <Button size="lg" variant="outline" className="border-gray-300 text-gray-700 px-8 py-4 text-lg">
-                Become a Seller
-              </Button>
-            </Link>
-          </div>
+              </Link>
+              <Link
+                to="/categories"
+                className="inline-flex items-center justify-center px-8 py-3 border border-gray-300 text-base font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50 transition-all duration-200"
+              >
+                Explore Categories
+              </Link>
+            </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
-            <div className="flex flex-col items-center p-6 bg-white/60 backdrop-blur-sm rounded-xl border border-gray-100">
-              <div className="w-12 h-12 bg-teal-100 rounded-lg flex items-center justify-center mb-4">
-                <Zap className="w-6 h-6 text-teal-600" />
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Instant Deployment</h3>
-              <p className="text-gray-600 text-center">Deploy automations in one click. No coding or complex setup required.</p>
-            </div>
+            {/* Stats */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.8 }}
+              className="mt-16 grid grid-cols-3 gap-8"
+            >
+              {[
+                { number: '10K+', label: 'Products' },
+                { number: '50K+', label: 'Customers' },
+                { number: '24/7', label: 'Support' },
+              ].map((stat, index) => (
+                <div key={index} className="text-center">
+                  <div className="text-3xl font-bold text-gray-900">{stat.number}</div>
+                  <div className="text-sm text-gray-600">{stat.label}</div>
+                </div>
+              ))}
+            </motion.div>
+          </motion.div>
 
-            <div className="flex flex-col items-center p-6 bg-white/60 backdrop-blur-sm rounded-xl border border-gray-100">
-              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
-                <Clock className="w-6 h-6 text-blue-600" />
+          {/* Right Column - Image/Animation */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="relative hidden lg:block"
+          >
+            <div className="relative w-full h-[600px]">
+              <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-blue-500/20 rounded-2xl transform rotate-3" />
+              <div className="absolute inset-0 bg-white rounded-2xl shadow-2xl overflow-hidden">
+                <img
+                  src="/hero-image.jpg"
+                  alt="AI Commerce Platform"
+                  className="w-full h-full object-cover"
+                />
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Save 90% Time</h3>
-              <p className="text-gray-600 text-center">Automate hours of manual work with intelligent workflows that learn and adapt.</p>
             </div>
-
-            <div className="flex flex-col items-center p-6 bg-white/60 backdrop-blur-sm rounded-xl border border-gray-100">
-              <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
-                <TrendingUp className="w-6 h-6 text-purple-600" />
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Scale Instantly</h3>
-              <p className="text-gray-600 text-center">Handle thousands of tasks simultaneously with enterprise-grade infrastructure.</p>
-            </div>
-          </div>
+          </motion.div>
         </div>
       </div>
-    </section>
+
+      {/* Decorative Elements */}
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white to-transparent" />
+    </div>
   );
 };
 

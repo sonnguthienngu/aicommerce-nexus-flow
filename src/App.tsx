@@ -1,36 +1,72 @@
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ShoppingCart, Heart, User, Search, Menu, X } from 'lucide-react';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Index from "./pages/Index";
-import Automations from "./pages/Automations";
-import Categories from "./pages/Categories";
-import Pricing from "./pages/Pricing";
-import ForSellers from "./pages/ForSellers";
-import NotFound from "./pages/NotFound";
+// Components
+import Navbar from './components/Navbar';
+import Hero from './components/Hero';
+import FeaturedProducts from './components/FeaturedProducts';
+import Categories from './components/Categories';
+import Newsletter from './components/Newsletter';
+import Footer from './components/Footer';
 
-const queryClient = new QueryClient();
+function App() {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/automations" element={<Automations />} />
-          <Route path="/categories" element={<Categories />} />
-          <Route path="/pricing" element={<Pricing />} />
-          <Route path="/for-sellers" element={<ForSellers />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  return (
+    <Router>
+      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+        <Navbar isScrolled={isScrolled} />
+        
+        <main className="relative">
+          <Hero />
+          
+          <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              <h2 className="text-4xl font-bold text-gray-900 text-center mb-12">
+                Featured Products
+              </h2>
+              <FeaturedProducts />
+            </motion.div>
+          </section>
+
+          <section className="bg-gray-50 py-16">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+              >
+                <h2 className="text-4xl font-bold text-gray-900 text-center mb-12">
+                  Shop by Category
+                </h2>
+                <Categories />
+              </motion.div>
+            </div>
+          </section>
+
+          <Newsletter />
+        </main>
+
+        <Footer />
+      </div>
+    </Router>
+  );
+}
 
 export default App;
