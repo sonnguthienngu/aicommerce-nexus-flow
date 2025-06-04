@@ -116,6 +116,7 @@ const Header = () => {
               >
                 For Sellers
               </Link>
+              
               <div className="flex flex-col space-y-2 pt-4">
                 <Link to="/auth/login" onClick={() => setIsMenuOpen(false)}>
                   <Button variant="outline" className="w-full">Sign In</Button>
@@ -125,7 +126,7 @@ const Header = () => {
                     setIsMenuOpen(false);
                     handleGetStarted();
                   }}
-                  className="w-full bg-teal-600 hover:bg-teal-700"
+                  className="w-full bg-teal-600 hover:bg-teal-700 text-white"
                 >
                   Get Started
                 </Button>
