@@ -2,27 +2,51 @@
 import { Button } from "@/components/ui/button";
 import { Search, Menu, X } from "lucide-react";
 import { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const location = useLocation();
+
+  const isActive = (path: string) => location.pathname === path;
 
   return (
     <header className="bg-white/95 backdrop-blur-sm border-b border-gray-100 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center space-x-8">
-            <div className="flex items-center space-x-2">
+            <Link to="/" className="flex items-center space-x-2">
               <div className="w-8 h-8 bg-gradient-to-br from-teal-500 to-blue-600 rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-sm">AI</span>
               </div>
               <span className="text-xl font-semibold text-gray-900">AutoMarket</span>
-            </div>
+            </Link>
             
             <nav className="hidden md:flex space-x-8">
-              <a href="#" className="text-gray-700 hover:text-gray-900 transition-colors">Automations</a>
-              <a href="#" className="text-gray-700 hover:text-gray-900 transition-colors">Categories</a>
-              <a href="#" className="text-gray-700 hover:text-gray-900 transition-colors">Pricing</a>
-              <a href="#" className="text-gray-700 hover:text-gray-900 transition-colors">For Sellers</a>
+              <Link 
+                to="/automations" 
+                className={`transition-colors ${isActive('/automations') ? 'text-teal-600 font-medium' : 'text-gray-700 hover:text-gray-900'}`}
+              >
+                Automations
+              </Link>
+              <Link 
+                to="/categories" 
+                className={`transition-colors ${isActive('/categories') ? 'text-teal-600 font-medium' : 'text-gray-700 hover:text-gray-900'}`}
+              >
+                Categories
+              </Link>
+              <Link 
+                to="/pricing" 
+                className={`transition-colors ${isActive('/pricing') ? 'text-teal-600 font-medium' : 'text-gray-700 hover:text-gray-900'}`}
+              >
+                Pricing
+              </Link>
+              <Link 
+                to="/for-sellers" 
+                className={`transition-colors ${isActive('/for-sellers') ? 'text-teal-600 font-medium' : 'text-gray-700 hover:text-gray-900'}`}
+              >
+                For Sellers
+              </Link>
             </nav>
           </div>
 
@@ -53,10 +77,34 @@ const Header = () => {
         {isMenuOpen && (
           <div className="md:hidden py-4 border-t border-gray-100">
             <nav className="flex flex-col space-y-4">
-              <a href="#" className="text-gray-700 hover:text-gray-900">Automations</a>
-              <a href="#" className="text-gray-700 hover:text-gray-900">Categories</a>
-              <a href="#" className="text-gray-700 hover:text-gray-900">Pricing</a>
-              <a href="#" className="text-gray-700 hover:text-gray-900">For Sellers</a>
+              <Link 
+                to="/automations" 
+                className={`transition-colors ${isActive('/automations') ? 'text-teal-600 font-medium' : 'text-gray-700 hover:text-gray-900'}`}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Automations
+              </Link>
+              <Link 
+                to="/categories" 
+                className={`transition-colors ${isActive('/categories') ? 'text-teal-600 font-medium' : 'text-gray-700 hover:text-gray-900'}`}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Categories
+              </Link>
+              <Link 
+                to="/pricing" 
+                className={`transition-colors ${isActive('/pricing') ? 'text-teal-600 font-medium' : 'text-gray-700 hover:text-gray-900'}`}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Pricing
+              </Link>
+              <Link 
+                to="/for-sellers" 
+                className={`transition-colors ${isActive('/for-sellers') ? 'text-teal-600 font-medium' : 'text-gray-700 hover:text-gray-900'}`}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                For Sellers
+              </Link>
               <div className="pt-4 space-y-2">
                 <Button variant="outline" className="w-full">Sign In</Button>
                 <Button className="w-full bg-teal-600 hover:bg-teal-700">Get Started</Button>
