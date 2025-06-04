@@ -11,6 +11,8 @@ export type Database = {
     Tables: {
       automation_categories: {
         Row: {
+          automation_count: number | null
+          color_class: string | null
           created_at: string
           description: string | null
           icon: string | null
@@ -18,6 +20,8 @@ export type Database = {
           name: string
         }
         Insert: {
+          automation_count?: number | null
+          color_class?: string | null
           created_at?: string
           description?: string | null
           icon?: string | null
@@ -25,6 +29,8 @@ export type Database = {
           name: string
         }
         Update: {
+          automation_count?: number | null
+          color_class?: string | null
           created_at?: string
           description?: string | null
           icon?: string | null
@@ -84,12 +90,17 @@ export type Database = {
           created_by: string | null
           description: string | null
           id: string
+          image_url: string | null
           is_featured: boolean | null
           price: number
           rating: number | null
+          seller_id: string | null
           setup_time_minutes: number | null
+          status: string | null
+          tags: string[] | null
           title: string
           total_executions: number | null
+          total_users: number | null
           updated_at: string
         }
         Insert: {
@@ -98,12 +109,17 @@ export type Database = {
           created_by?: string | null
           description?: string | null
           id?: string
+          image_url?: string | null
           is_featured?: boolean | null
           price?: number
           rating?: number | null
+          seller_id?: string | null
           setup_time_minutes?: number | null
+          status?: string | null
+          tags?: string[] | null
           title: string
           total_executions?: number | null
+          total_users?: number | null
           updated_at?: string
         }
         Update: {
@@ -112,12 +128,17 @@ export type Database = {
           created_by?: string | null
           description?: string | null
           id?: string
+          image_url?: string | null
           is_featured?: boolean | null
           price?: number
           rating?: number | null
+          seller_id?: string | null
           setup_time_minutes?: number | null
+          status?: string | null
+          tags?: string[] | null
           title?: string
           total_executions?: number | null
+          total_users?: number | null
           updated_at?: string
         }
         Relationships: [
@@ -126,6 +147,13 @@ export type Database = {
             columns: ["category_id"]
             isOneToOne: false
             referencedRelation: "automation_categories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "automations_seller_id_fkey"
+            columns: ["seller_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -138,6 +166,7 @@ export type Database = {
           full_name: string | null
           id: string
           updated_at: string | null
+          user_type: string | null
         }
         Insert: {
           avatar_url?: string | null
@@ -146,6 +175,7 @@ export type Database = {
           full_name?: string | null
           id: string
           updated_at?: string | null
+          user_type?: string | null
         }
         Update: {
           avatar_url?: string | null
@@ -154,6 +184,7 @@ export type Database = {
           full_name?: string | null
           id?: string
           updated_at?: string | null
+          user_type?: string | null
         }
         Relationships: []
       }
