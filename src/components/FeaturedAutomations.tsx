@@ -17,12 +17,15 @@ interface Automation {
   tags: string[];
   is_featured: boolean;
   status: string;
-  profiles: {
-    full_name: string;
-  } | null;
+  created_by: string;
+  category_id: string;
   automation_categories: {
     name: string;
   } | null;
+}
+
+interface Profile {
+  full_name: string;
 }
 
 const FeaturedAutomations = () => {
@@ -33,7 +36,6 @@ const FeaturedAutomations = () => {
         .from('automations')
         .select(`
           *,
-          profiles!created_by(full_name),
           automation_categories(name)
         `)
         .eq('is_featured', true)
@@ -49,6 +51,36 @@ const FeaturedAutomations = () => {
       return data as Automation[];
     },
   });
+
+  // Fetch profiles separately for the creators
+  const { data: profiles = [] } = useQuery({
+    queryKey: ['automation-creators', automations.map(a => a.created_by)],
+    queryFn: async () => {
+      if (automations.length === 0) return [];
+      
+      const creatorIds = automations.map(a => a.created_by).filter(Boolean);
+      if (creatorIds.length === 0) return [];
+
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('id, full_name')
+        .in('id', creatorIds);
+
+      if (error) {
+        console.error('Error fetching profiles:', error);
+        return [];
+      }
+
+      return data as (Profile & { id: string })[];
+    },
+    enabled: automations.length > 0,
+  });
+
+  // Create a map for easy profile lookup
+  const profileMap = profiles.reduce((acc, profile) => {
+    acc[profile.id] = profile;
+    return acc;
+  }, {} as Record<string, Profile>);
 
   if (isLoading) {
     return (
@@ -97,67 +129,71 @@ const FeaturedAutomations = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {automations.map((automation) => (
-            <Card key={automation.id} className="group hover:shadow-xl transition-all duration-300 border-gray-100 hover:border-teal-200">
-              <div className="relative overflow-hidden">
-                <img 
-                  src={automation.image_url || "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400&h=240&fit=crop"} 
-                  alt={automation.title}
-                  className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-                <div className="absolute top-4 left-4">
-                  <Badge className="bg-white/90 text-gray-700 hover:bg-white">
-                    {automation.automation_categories?.name || 'General'}
-                  </Badge>
-                </div>
-              </div>
-              
-              <CardHeader className="pb-4">
-                <div className="flex justify-between items-start mb-2">
-                  <CardTitle className="text-lg group-hover:text-teal-600 transition-colors">
-                    {automation.title}
-                  </CardTitle>
-                  <span className="text-lg font-bold text-teal-600">${automation.price}/month</span>
-                </div>
-                <CardDescription className="text-gray-600 line-clamp-2">
-                  {automation.description}
-                </CardDescription>
-              </CardHeader>
-              
-              <CardContent className="pt-0">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center space-x-1">
-                    <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                    <span className="text-sm font-medium text-gray-900">{automation.rating?.toFixed(1) || '0.0'}</span>
-                  </div>
-                  <div className="flex items-center space-x-1 text-gray-500">
-                    <Users className="w-4 h-4" />
-                    <span className="text-sm">{automation.total_users?.toLocaleString() || '0'} users</span>
+          {automations.map((automation) => {
+            const creator = profileMap[automation.created_by];
+            
+            return (
+              <Card key={automation.id} className="group hover:shadow-xl transition-all duration-300 border-gray-100 hover:border-teal-200">
+                <div className="relative overflow-hidden">
+                  <img 
+                    src={automation.image_url || "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400&h=240&fit=crop"} 
+                    alt={automation.title}
+                    className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute top-4 left-4">
+                    <Badge className="bg-white/90 text-gray-700 hover:bg-white">
+                      {automation.automation_categories?.name || 'General'}
+                    </Badge>
                   </div>
                 </div>
+                
+                <CardHeader className="pb-4">
+                  <div className="flex justify-between items-start mb-2">
+                    <CardTitle className="text-lg group-hover:text-teal-600 transition-colors">
+                      {automation.title}
+                    </CardTitle>
+                    <span className="text-lg font-bold text-teal-600">${automation.price}/month</span>
+                  </div>
+                  <CardDescription className="text-gray-600 line-clamp-2">
+                    {automation.description}
+                  </CardDescription>
+                </CardHeader>
+                
+                <CardContent className="pt-0">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center space-x-1">
+                      <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                      <span className="text-sm font-medium text-gray-900">{automation.rating?.toFixed(1) || '0.0'}</span>
+                    </div>
+                    <div className="flex items-center space-x-1 text-gray-500">
+                      <Users className="w-4 h-4" />
+                      <span className="text-sm">{automation.total_users?.toLocaleString() || '0'} users</span>
+                    </div>
+                  </div>
 
-                {automation.tags && automation.tags.length > 0 && (
-                  <div className="flex flex-wrap gap-1 mb-4">
-                    {automation.tags.slice(0, 3).map((tag) => (
-                      <Badge key={tag} variant="secondary" className="text-xs">
-                        {tag}
-                      </Badge>
-                    ))}
-                  </div>
-                )}
+                  {automation.tags && automation.tags.length > 0 && (
+                    <div className="flex flex-wrap gap-1 mb-4">
+                      {automation.tags.slice(0, 3).map((tag) => (
+                        <Badge key={tag} variant="secondary" className="text-xs">
+                          {tag}
+                        </Badge>
+                      ))}
+                    </div>
+                  )}
 
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-500">
-                    by {automation.profiles?.full_name || 'Unknown'}
-                  </span>
-                  <Button size="sm" className="bg-teal-600 hover:bg-teal-700">
-                    Deploy Now
-                    <ExternalLink className="ml-1 w-3 h-3" />
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-gray-500">
+                      by {creator?.full_name || 'Unknown'}
+                    </span>
+                    <Button size="sm" className="bg-teal-600 hover:bg-teal-700">
+                      Deploy Now
+                      <ExternalLink className="ml-1 w-3 h-3" />
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
 
         <div className="text-center mt-12">
