@@ -1,43 +1,33 @@
 # AICommerce Nexus Flow
 
-A modern e-commerce platform built with Next.js, TypeScript, and Supabase.
+A modern e-commerce platform built with React, TypeScript, and Tailwind CSS, featuring a clean and intuitive user interface with smooth animations and transitions.
 
 ## Features
 
-- 🛍️ Product browsing and searching
-- 🔍 Advanced filtering and sorting
+- 🛍️ Modern and responsive design
+- 🎨 Beautiful UI with smooth animations
 - 🛒 Shopping cart functionality
-- ❤️ Wishlist management
-- 📦 Order management
-- 👤 User authentication
-- ⭐ Product reviews and ratings
-- 📱 Responsive design
-- 🔒 Secure payment processing
+- 🔍 Product search
+- 📱 Mobile-first approach
+- ♿ Accessibility features
+- ⚡ Performance optimized
+- 🔒 Type-safe with TypeScript
 
 ## Tech Stack
 
-### Frontend
-- Next.js 14
+- React 18
 - TypeScript
 - Tailwind CSS
-- Shadcn UI
-- React Query
-- Zustand
-
-### Backend
-- Node.js
-- Express
-- TypeScript
-- Supabase
-- Jest
+- Framer Motion
+- React Router
+- Lucide Icons
 
 ## Getting Started
 
 ### Prerequisites
 
-- Node.js 18+
+- Node.js 16.x or later
 - npm or yarn
-- Supabase account
 
 ### Installation
 
@@ -49,81 +39,31 @@ cd aicommerce-nexus-flow
 
 2. Install dependencies:
 ```bash
-# Install frontend dependencies
 npm install
-
-# Install backend dependencies
-cd server
-npm install
+# or
+yarn install
 ```
 
-3. Set up environment variables:
+3. Start the development server:
 ```bash
-# Frontend (.env.local)
-NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-
-# Backend (.env)
-SUPABASE_URL=your_supabase_url
-SUPABASE_SERVICE_KEY=your_supabase_service_key
-JWT_SECRET=your_jwt_secret
-```
-
-4. Start the development servers:
-```bash
-# Start frontend (from root directory)
 npm run dev
-
-# Start backend (from server directory)
-npm run dev
+# or
+yarn dev
 ```
 
-## Testing
+4. Open [http://localhost:5173](http://localhost:5173) in your browser.
 
-```bash
-# Frontend tests
-npm test
+## Project Structure
 
-# Backend tests
-cd server
-npm test
 ```
-
-## API Documentation
-
-### Authentication
-- POST /api/auth/register - Register a new user
-- POST /api/auth/login - Login user
-- POST /api/auth/logout - Logout user
-- GET /api/auth/me - Get current user
-- PUT /api/auth/profile - Update user profile
-
-### Products
-- GET /api/products - Get all products
-- GET /api/products/:id - Get single product
-- POST /api/products - Create product (admin)
-- PUT /api/products/:id - Update product (admin)
-- DELETE /api/products/:id - Delete product (admin)
-
-### Cart
-- GET /api/cart - Get cart
-- POST /api/cart - Add to cart
-- PUT /api/cart/:id - Update cart item
-- DELETE /api/cart/:id - Remove from cart
-- DELETE /api/cart - Clear cart
-
-### Wishlist
-- GET /api/wishlist - Get wishlist
-- POST /api/wishlist - Add to wishlist
-- DELETE /api/wishlist/:id - Remove from wishlist
-- DELETE /api/wishlist - Clear wishlist
-
-### Orders
-- GET /api/orders - Get orders
-- GET /api/orders/:id - Get single order
-- POST /api/orders - Create order
-- PUT /api/orders/:id/status - Update order status (admin)
-- DELETE /api/orders/:id - Cancel order
+src/
+├── components/     # React components
+├── context/       # React context providers
+├── hooks/         # Custom React hooks
+├── types/         # TypeScript type definitions
+├── utils/         # Utility functions
+└── App.tsx        # Main application component
+```
 
 ## Contributing
 
@@ -139,7 +79,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Acknowledgments
 
-- [Next.js](https://nextjs.org/)
-- [Supabase](https://supabase.io/)
+- [React](https://reactjs.org/)
+- [TypeScript](https://www.typescriptlang.org/)
 - [Tailwind CSS](https://tailwindcss.com/)
-- [Shadcn UI](https://ui.shadcn.com/)
+- [Framer Motion](https://www.framer.com/motion/)
+- [Lucide Icons](https://lucide.dev/)
