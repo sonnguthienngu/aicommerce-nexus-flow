@@ -1,18 +1,14 @@
+
 import { Button } from "@/components/ui/button";
 import { Search, Menu, X } from "lucide-react";
 import { useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
-  const navigate = useNavigate();
 
   const isActive = (path: string) => location.pathname === path;
-
-  const handleGetStarted = () => {
-    navigate('/auth/login');
-  };
 
   return (
     <header className="bg-white/95 backdrop-blur-sm border-b border-gray-100 sticky top-0 z-50">
@@ -63,15 +59,8 @@ const Header = () => {
                 className="pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent w-64"
               />
             </div>
-            <Link to="/auth/login">
-              <Button variant="outline" className="text-gray-700">Sign In</Button>
-            </Link>
-            <Button 
-              onClick={handleGetStarted}
-              className="bg-teal-600 hover:bg-teal-700 text-white"
-            >
-              Get Started
-            </Button>
+            <Button variant="outline" className="text-gray-700">Sign In</Button>
+            <Button className="bg-teal-600 hover:bg-teal-700 text-white">Get Started</Button>
           </div>
 
           <div className="md:hidden">
@@ -116,19 +105,9 @@ const Header = () => {
               >
                 For Sellers
               </Link>
-              <div className="flex flex-col space-y-2 pt-4">
-                <Link to="/auth/login" onClick={() => setIsMenuOpen(false)}>
-                  <Button variant="outline" className="w-full">Sign In</Button>
-                </Link>
-                <Button 
-                  onClick={() => {
-                    setIsMenuOpen(false);
-                    handleGetStarted();
-                  }}
-                  className="w-full bg-teal-600 hover:bg-teal-700"
-                >
-                  Get Started
-                </Button>
+              <div className="pt-4 space-y-2">
+                <Button variant="outline" className="w-full">Sign In</Button>
+                <Button className="w-full bg-teal-600 hover:bg-teal-700">Get Started</Button>
               </div>
             </nav>
           </div>
