@@ -12,7 +12,6 @@ import Profile from './pages/Profile';
 import Orders from './pages/Orders';
 import Wishlist from './pages/Wishlist';
 import NotFound from './pages/NotFound';
-import SupabaseTest from './components/SupabaseTest';
 
 // Protected Route component
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
@@ -41,9 +40,6 @@ function App() {
           <div className="min-h-screen flex flex-col">
             <Navbar />
             <main className="flex-grow">
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                <SupabaseTest />
-              </div>
               <Routes>
                 {/* Auth routes */}
                 <Route path="/auth/login" element={<LoginPage />} />
