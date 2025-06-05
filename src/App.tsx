@@ -1,54 +1,111 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { CartProvider } from './context/CartContext';
-import { Navbar } from './components/Navbar';
-import { Hero } from './components/Hero';
-import { FeaturedProducts } from './components/FeaturedProducts';
-import { Categories } from './components/Categories';
-import { Newsletter } from './components/Newsletter';
-import { Footer } from './components/Footer';
-import { Cart } from './components/Cart';
-import { ProductDetails } from './components/ProductDetails';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { CartProvider } from './contexts/CartContext';
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
+import Home from './pages/Home';
+import ProductDetails from './pages/ProductDetails';
+import Cart from './pages/Cart';
+import LoginPage from './pages/auth/LoginPage';
+import RegisterPage from './pages/auth/RegisterPage';
+import Profile from './pages/Profile';
+import Orders from './pages/Orders';
+import Wishlist from './pages/Wishlist';
+import NotFound from './pages/NotFound';
+import SupabaseTest from './components/SupabaseTest';
 
-// Mock product data for demonstration
-const mockProduct = {
-  id: 1,
-  name: "Premium Wireless Headphones",
-  price: 299.99,
-  description: "Experience crystal-clear sound with our premium wireless headphones. Featuring active noise cancellation, 30-hour battery life, and premium comfort for all-day wear.",
-  images: [
-    "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800",
-    "https://images.unsplash.com/photo-1572536147248-ac59a8abfa4b?w=800",
-    "https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=800",
-    "https://images.unsplash.com/photo-1545127398-14699f92334b?w=800"
-  ],
-  rating: 4.5,
-  reviews: 128,
-  category: "Electronics",
-  stock: 15
-};
+// Protected Route component
+function ProtectedRoute({ children }: { children: React.ReactNode }) {
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return <Navigate to="/auth/login" />;
+  }
+
+  return <>{children}</>;
+}
 
 function App() {
   return (
-    <CartProvider>
-      <Router>
-        <div className="min-h-screen bg-gray-50">
-          <Navbar />
-          <Routes>
-            <Route path="/" element={
-              <>
-                <Hero />
-                <FeaturedProducts />
-                <Categories />
-                <Newsletter />
-              </>
-            } />
-            <Route path="/cart" element={<Cart />} />
-            <Route path="/product/:id" element={<ProductDetails product={mockProduct} />} />
-          </Routes>
-          <Footer />
-        </div>
-      </Router>
-    </CartProvider>
+    <Router>
+      <AuthProvider>
+        <CartProvider>
+          <div className="min-h-screen flex flex-col">
+            <Navbar />
+            <main className="flex-grow">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <SupabaseTest />
+              </div>
+              <Routes>
+                {/* Auth routes */}
+                <Route path="/auth/login" element={<LoginPage />} />
+                <Route path="/auth/register" element={<RegisterPage />} />
+
+                {/* Protected routes */}
+                <Route
+                  path="/"
+                  element={
+                    <ProtectedRoute>
+                      <Home />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/product/:id"
+                  element={
+                    <ProtectedRoute>
+                      <ProductDetails />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/cart"
+                  element={
+                    <ProtectedRoute>
+                      <Cart />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/profile"
+                  element={
+                    <ProtectedRoute>
+                      <Profile />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/orders"
+                  element={
+                    <ProtectedRoute>
+                      <Orders />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/wishlist"
+                  element={
+                    <ProtectedRoute>
+                      <Wishlist />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </main>
+            <Footer />
+          </div>
+        </CartProvider>
+      </AuthProvider>
+    </Router>
   );
 }
 
