@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { Hero } from '../components/Hero';
-import { FeaturedProducts } from '../components/FeaturedProducts';
-import { Categories } from '../components/Categories';
-import { Newsletter } from '../components/Newsletter';
+import Hero from '../components/Hero';
+import FeaturedProducts from '../components/FeaturedProducts';
+import Categories from '../components/Categories';
+import Newsletter from '../components/Newsletter';
 import { AIAutomation } from '../components/AIAutomation';
 import { getFeaturedProducts, getCategories } from '../services/api';
 import { Product, Category } from '../types';
@@ -62,4 +62,4 @@ export default function Home() {
       <Newsletter />
     </div>
   );
-} 
+}

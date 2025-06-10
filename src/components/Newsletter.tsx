@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Send } from 'lucide-react';
 
 const Newsletter = () => {
@@ -111,4 +111,4 @@ const Newsletter = () => {
   );
 };
 
-export default Newsletter; 
+export default Newsletter;

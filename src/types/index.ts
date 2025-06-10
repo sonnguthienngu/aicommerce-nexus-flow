@@ -1,3 +1,4 @@
+
 export interface Product {
   id: number;
   name: string;
@@ -27,8 +28,12 @@ export interface User {
   avatar?: string;
 }
 
-export interface CartItem extends Product {
+export interface CartItem {
+  id: number;
+  productId: number;
+  userId: string;
   quantity: number;
+  product: Product;
 }
 
 export interface Order {
@@ -65,4 +70,4 @@ export interface WishlistItem {
   userId: string;
   addedAt: string;
   product: Product;
-} 
+}

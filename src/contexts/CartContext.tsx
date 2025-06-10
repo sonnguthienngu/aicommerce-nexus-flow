@@ -1,3 +1,4 @@
+
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { Product, CartItem } from '../types';
 import { getCart, addToCart, updateCartItem, removeFromCart } from '../services/api';
@@ -26,7 +27,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     const loadCart = async () => {
       try {
         const cartItems = await getCart();
-        setItems(cartItems);
+        setItems(cartItems as CartItem[]);
       } catch (err) {
         console.error('Failed to load cart:', err);
         setError(err instanceof Error ? err.message : 'Failed to load cart');
@@ -43,7 +44,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       setError(null);
       await addToCart(product.id, quantity);
       const cartItems = await getCart();
-      setItems(cartItems);
+      setItems(cartItems as CartItem[]);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to add item to cart');
       throw err;
@@ -55,7 +56,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       setError(null);
       await updateCartItem(productId, quantity);
       const cartItems = await getCart();
-      setItems(cartItems);
+      setItems(cartItems as CartItem[]);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to update cart item');
       throw err;
@@ -67,7 +68,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       setError(null);
       await removeFromCart(productId);
       const cartItems = await getCart();
-      setItems(cartItems);
+      setItems(cartItems as CartItem[]);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to remove item from cart');
       throw err;
@@ -102,4 +103,4 @@ export function useCart() {
     throw new Error('useCart must be used within a CartProvider');
   }
   return context;
-} 
+}
