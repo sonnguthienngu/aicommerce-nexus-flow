@@ -1,15 +1,16 @@
+
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useLocation } from 'react-router-dom';
 import { ShoppingCart, Heart, User, Search, Menu, X } from 'lucide-react';
-import { useCart } from '../context/CartContext';
+import { useCart } from '../contexts/CartContext';
 
 export const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const location = useLocation();
-  const { state } = useCart();
+  const { totalItems } = useCart();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -24,8 +25,6 @@ export const Navbar = () => {
   useEffect(() => {
     setIsMobileMenuOpen(false);
   }, [location]);
-
-  const cartItemsCount = state.items.reduce((total, item) => total + (item.quantity || 1), 0);
 
   return (
     <nav
@@ -94,13 +93,13 @@ export const Navbar = () => {
               aria-label="Shopping cart"
             >
               <ShoppingCart className="w-5 h-5" />
-              {cartItemsCount > 0 && (
+              {totalItems > 0 && (
                 <motion.span
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   className="absolute -top-1 -right-1 bg-blue-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center"
                 >
-                  {cartItemsCount}
+                  {totalItems}
                 </motion.span>
               )}
             </Link>
@@ -121,13 +120,13 @@ export const Navbar = () => {
               aria-label="Shopping cart"
             >
               <ShoppingCart className="w-5 h-5" />
-              {cartItemsCount > 0 && (
+              {totalItems > 0 && (
                 <motion.span
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   className="absolute -top-1 -right-1 bg-blue-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center"
                 >
-                  {cartItemsCount}
+                  {totalItems}
                 </motion.span>
               )}
             </Link>

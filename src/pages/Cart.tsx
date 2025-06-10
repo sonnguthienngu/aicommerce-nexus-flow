@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../contexts/CartContext';
@@ -80,7 +81,7 @@ export default function Cart() {
                   >
                     <div className="flex-shrink-0">
                       <img
-                        src={item.product.image}
+                        src={item.product.images?.[0] || '/placeholder.svg'}
                         alt={item.product.name}
                         className="w-24 h-24 rounded-md object-center object-cover sm:w-32 sm:h-32"
                       />
