@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { getWishlist, removeFromWishlist } from '../services/api';
@@ -115,7 +116,7 @@ export default function Wishlist() {
               >
                 <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-t-lg bg-gray-200">
                   <img
-                    src={item.product.image}
+                    src={item.product.images?.[0] || '/placeholder.svg'}
                     alt={item.product.name}
                     className="w-full h-full object-center object-cover group-hover:opacity-75"
                   />
